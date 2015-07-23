@@ -23,16 +23,30 @@ All available switches are:
 
 ### settings.json
 
-You can set all the switches by creating a settings.json file.
+You can set all the switches by creating a settings.json file and placing it where the .exe file is located.
 The file would look like this:
 
 ```json
-	{
-		"DefaultDocument": "index.html",
-		"DefaultMimeType": "text/html",
-		"Path": "C:\\My\\Local\\Folder",
-		"Port": 80,
-		"ServerName": "MyAwesomeServer",
-		"Verbose": True
-	}
+{
+	"DefaultDocument": "index.html",
+	"DefaultMimeType": "text/html",
+	"Path": "C:\\My\\Local\\Folder",
+	"Port": 80,
+	"ServerName": "MyAwesomeServer",
+	"Verbose": True
+}
+```
+
+### mimeTypes.json
+
+The default mime type may not be enough for your needs.
+You can create a mimeTypes.json and place it where the .exe file is located and fill it with file extensions and their corresponding mime type, like so:
+
+```json
+{
+	"txt": "text/plain; charset=utf-8",
+	"js": "text/javascript; charset=utf-8",
+	"css": "text/css; charset=utf-8",
+	"json": "application/json; charset=utf-8"
+}
 ```
