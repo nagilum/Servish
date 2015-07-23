@@ -12,22 +12,9 @@ using System.Windows.Forms;
 namespace Servish {
 	public class Program {
 		/// <summary>
-		/// The path from which Servish is executed.
-		/// </summary>
-		private static readonly string execPath = Application.ExecutablePath.Substring(0,
-			Application.ExecutablePath.LastIndexOf(@"\", StringComparison.InvariantCultureIgnoreCase));
-
-		/// <summary>
 		/// The default instance of settings.
 		/// </summary>
-		private static Settings settings = new Settings {
-			DefaultDocument = "index.html",
-			DefaultMimeType = "application/octet-stream",
-			Path = execPath,
-			Port = 80,
-			ServerName = Environment.MachineName,
-			Verbose = false
-		};
+		private static Settings settings;
 
 		/// <summary>
 		/// A list of mime types to answer with when called.
@@ -44,10 +31,10 @@ namespace Servish {
 		/// </summary>
 		public static void Main(string[] args) {
 			// Read settings from file.
-			if (File.Exists(Path.Combine(execPath, "settings.json"))) {
+			if (File.Exists(Path.Combine(Application.StartupPath, "settings.json"))) {
 				try {
 					settings = new JavaScriptSerializer()
-						.Deserialize<Settings>(File.ReadAllText(Path.Combine(execPath, "settings.json")));
+						.Deserialize<Settings>(File.ReadAllText(Path.Combine(Application.StartupPath, "settings.json")));
 				}
 				catch (Exception ex) {
 					Console.WriteLine("Found but unable to read or parse the settings.json file! Aborting.");
@@ -56,11 +43,24 @@ namespace Servish {
 				}
 			}
 
+			if (settings == null) {
+				var dirInfo = new DirectoryInfo(".");
+
+				settings = new Settings {
+					DefaultDocument = "index.html",
+					DefaultMimeType = "application/octet-stream",
+					Path = dirInfo.FullName,
+					Port = 80,
+					ServerName = Environment.MachineName,
+					Verbose = false
+				};
+			}
+
 			// Read mime types from file
-			if (File.Exists(Path.Combine(execPath, "mimeTypes.json"))) {
+			if (File.Exists(Path.Combine(Application.StartupPath, "mimeTypes.json"))) {
 				try {
 					mimeTypes = new JavaScriptSerializer()
-						.Deserialize<Dictionary<string, string>>(File.ReadAllText(Path.Combine(execPath, "mimeTypes.json")));
+						.Deserialize<Dictionary<string, string>>(File.ReadAllText(Path.Combine(Application.StartupPath, "mimeTypes.json")));
 				}
 				catch (Exception ex) {
 					Console.WriteLine("Found but unable to read or parse the mimeTypes.json file! Aborting.");
