@@ -48,7 +48,7 @@ namespace Servish {
 
 				settings = new Settings {
 					DefaultDocument = "index.html",
-					DefaultMimeType = "application/octet-stream",
+					DefaultMimeType = "text/html",
 					Path = dirInfo.FullName,
 					Port = 80,
 					ServerName = Environment.MachineName,
